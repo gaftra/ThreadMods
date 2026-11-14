@@ -13,7 +13,7 @@ internal static class ThreadCatalog
 
     internal sealed record Modifier(ThreadType Type, string Label);
 
-    // Add exact identifiers and verified labels here as more Thread outcomes are identified.
+    // Use exact identifiers and mark unconfirmed Thread outcomes as candidates.
     // Grouping describes the mechanic, not proof that a Thread caused the stat.
     internal static readonly IReadOnlyDictionary<string, Modifier> Modifiers = new Dictionary<string, Modifier>
     {
@@ -41,6 +41,8 @@ internal static class ThreadCatalog
         ["MapBlightReplaceXLanesWithCurrencyLane"] = new(ThreadType.Blight, "Blight lanes replaced by rolling currency monsters"),
         ["MapBlightReplaceXLanesWithExileLane"] = new(ThreadType.Blight, "Blight lanes replaced by Rogue Exiles that each drop a Unique item"),
         ["MapBlightCoreReplacePantheonGod"] = new(ThreadType.Blight, "Defending the replacement Pantheon God awakens it. Blight kills improve its drops, and at least one rare is Pantheon-Touched"),
+        ["MapBlightUpToXSuperchargedLanes"] = new(ThreadType.Blight, "Mycotic lanes (candidate)"),
+        ["MapBlightTowerCostPct"] = new(ThreadType.Blight, "Tower construction and upgrade cost (%) (candidate for free towers)"),
         ["MapBreachHiveIsAlwaysSkyFortress"] = new(ThreadType.Breach, "Breach Hives lead to a Hive Fortress"),
         ["MapUnstableBreachSpawnsBoss"] = new(ThreadType.Breach, "Unstable Breaches contain a boss"),
         ["MapContainsAdditionalUnstableBreaches"] = new(ThreadType.Breach, "Additional Unstable Breaches"),

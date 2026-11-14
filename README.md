@@ -37,7 +37,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 - [ ] Beast invasion chance (Thread outcome mapping unconfirmed)
 - [ ] Area contains the Black Morrigan
 - [X] Einhar blood explosion aura
-- [ ] Beasts empowered by wisps of all types
+- [X] Beasts empowered by wisps of all types
 - [ ] Yellow beasts replaced by hulks (internal name; tooltip mapping unconfirmed)
 - [ ] Bestiary packs replaced by Harvest beasts (internal name; tooltip mapping unconfirmed)
 
@@ -48,25 +48,25 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 - [ ] Catarina's Corpse Sculpture appears in the area
 - [X] Additional rare monster modifiers on Syndicate members
 - [ ] Chance for dropped Veiled items to have their Veiled modifier fractured (%)
-- [ ] Additional clusters of Syndicate Safehouse barrels and chests
+- [X] Additional clusters of Syndicate Safehouse barrels and chests
 
 ### Blight
 
 - [ ] Blight pump and towers spawn friendly Pustules that grant auras
 - [ ] Defending the Blight pump spawns a miniboss whose rewards improve with Blight kills
 - [X] Blight lanes replaced by rolling currency monsters
-- [ ] Blight lanes replaced by Rogue Exiles that each drop a Unique item
+- [X] Blight lanes replaced by Rogue Exiles that each drop a Unique item
 - [ ] Defending the replacement Pantheon God awakens it; Blight kills improve its drops, and at least one rare is Pantheon-Touched
-- [ ] Up to two lanes are Mycotic (candidate stat only; tooltip mapping unconfirmed)
+- [X] Up to two lanes are Mycotic
 - [ ] Building and upgrading Blight towers is free (general tower-cost stat only; Thread mapping unconfirmed)
 
 ### Breach
 
-- [ ] Breach Hives lead to a Hive Fortress 
+- [X] Breach Hives lead to a Hive Fortress 
 - [ ] Unstable Breaches contain a boss 
 - [ ] The area contains an additional Unstable Breach. This can roll up to three times 
 - [ ] Rare Breach monsters drop an additional Wombgift when killed (displayed as a raw percentage chance)
-- [ ] The area contains an additional Genesis Tree Sapling 
+- [X] The area contains an additional Genesis Tree Sapling 
 - [ ] Breach Hive and Fortress encounters contain additional Breach Coffers
 - [ ] Rare Breach monsters have an additional Breach modifier
 - [ ] Ailith's skills in the area are empowered
@@ -85,18 +85,18 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 - [X] Doors can be golden. Opening one upgrades the tier of the connected room
 - [ ] Rooms contain an object that opens all locked doors
 - [ ] Rooms contain Vaal Vessels
-- [ ] Rooms contain Gold Piles
-- [ ] Claiming Cursed Treasures drops stacks of currency and reduces the remaining Incursion time
-- [ ] Rooms contain a Vaal Flesh Merchant
+- [X] Rooms contain Gold Piles
+- [X] Claiming Cursed Treasures drops stacks of currency and reduces the remaining Incursion time
+- [X] Rooms contain a Vaal Flesh Merchant
 
 ### Legion
 
-- [ ] The area contains additional Legion encounters
+- [X] The area contains additional Legion encounters
 - [ ] Both Legions have Generals
 - [ ] War Hoards replace all Legion chests
-- [ ] Purple crystals cover the battlefield. Defeating high-ranking Legion monsters shatters nearby crystals and drops items
+- [X] Purple crystals cover the battlefield. Defeating high-ranking Legion monsters shatters nearby crystals and drops items
 - [ ] Lower-ranking Legion monsters are promoted
-- [ ] High-ranking Legion monsters are positioned close to the Monolith
+- [X] High-ranking Legion monsters are positioned close to the Monolith
 - [ ] Legion monsters can be released from stasis repeatedly, gaining difficulty and rewards with each release
 
 ### Ritual
@@ -105,16 +105,16 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 - [X] Ritual Altars spawn a friendly wisp. Standing near it increases Tribute gained from slain enemies
 - [ ] Completing the final Ritual turns it into a Bodach's Ritual that can be run again for more Tribute
 - [ ] Completing a Ritual grants every player a Blood Shrine buff 
-- [ ] At the final Ritual, players can sacrifice their Tribute to summon a champion of the King
+- [X] At the final Ritual, players can sacrifice their Tribute to summon a champion of the King
 
 ### Ultimatum
 
-- [ ] All offered rewards are Inscribed Ultimatums
+- [X] All offered rewards are Inscribed Ultimatums
 - [ ] All offered rewards are Catalysts
 - [ ] The encounter leads to the Trialmaster
-- [ ] A beating heart spawns every round. Defeating it temporarily grants Adrenaline to all players and mercenaries in the area
+- [X] A beating heart spawns every round. Defeating it temporarily grants Adrenaline to all players and mercenaries in the area
 - [ ] Double Down is available at round 7 or 8
-- [ ] Cursed Currency spawns every round. Claiming it adds random Currency to the collected rewards
+- [X] Cursed Currency spawns every round. Claiming it adds random Currency to the collected rewards
 - [ ] The encounter spawns a nearby Soul Core. Claiming it speeds up completion for all Ultimatum encounter types and can empower Ultimatum enemies
 - [ ] Each round offers secondary upsides alongside the usual difficulty modifiers
 
@@ -142,7 +142,7 @@ The DLL also includes `MapEinharMissionBeastInvasionChancePct` and `DisplayMemor
 
 ## Blight Thread modifiers
 
-The in-game modifier tooltip lists these outcomes. The first five have matching identifiers in the installed ExileAPI `GameStat` enum. Live area stats for these outcomes still need verification.
+The in-game modifier tooltip lists these outcomes. All seven identifiers below are in the installed ExileAPI `GameStat` enum. The overlay labels the last two as candidates and displays their raw values when present.
 
 | Tooltip effect | ExileAPI stat |
 | --- | --- |
@@ -154,7 +154,7 @@ The in-game modifier tooltip lists these outcomes. The first five have matching 
 | Up to two lanes are Mycotic. | `MapBlightUpToXSuperchargedLanes` is a candidate. The installed data does not tie that identifier to the Mycotic tooltip. |
 | Building and upgrading Blight towers is free. | The installed data has a general `MapBlightTowerCostPct` stat. The specific Thread mapping and raw value are unconfirmed. |
 
-In **Threads**, enable the Blight **Always Show** toggle to include visible Blight stats in the overlay. To capture candidate values, open the inspector, clear **Bestiary only**, enable **Include visible**, and search for `Blight` after entering a Blight Thread map.
+In **Threads**, enable the Blight **Always Show** toggle to include visible Blight stats in the overlay. To capture candidate values, open the inspector, clear **Bestiary only**, enable **Include visible**, and search for `Blight` after entering a Blight Thread map. **Copy shown stats** captures the raw identifiers and values for comparison with the lane types and tower costs you observe.
 
 ## Extending the modifier catalogue
 
