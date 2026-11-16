@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using ExileCore.Shared.Attributes;
 using ExileCore.Shared.Interfaces;
 using ExileCore.Shared.Nodes;
+using SharpDX;
 
 namespace ThreadMods;
 
@@ -16,8 +18,11 @@ public sealed class ThreadModsSettings : ISettings
     public ToggleNode ShowRawNames { get; set; } = new(false);
     public ThreadDisplaySettings Threads { get; set; } = new();
     public ToggleNode ShowInspector { get; set; } = new(false);
-    // Kept for compatibility with the previous inspector's saved settings.
-    public ToggleNode BestiaryOnly { get; set; } = new(false);
+    [Menu("Highlight colour")]
+    public ColorNode HighlightColour { get; set; } = new(Color.Green);
+
+    [IgnoreMenu]
+    public Dictionary<string, bool> HighlightedModifiers { get; set; } = new();
 }
 
 [Submenu]

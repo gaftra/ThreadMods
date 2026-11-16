@@ -7,18 +7,50 @@ using System.Text;
 using System.Threading;
 using ExileCore;
 using Hexa.NET.ImGui;
+using Color = SharpDX.Color;
 
 namespace ThreadMods;
 
 public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
 {
     private const int MinimumAreaLevel = 68;
+    private static readonly Color HeadingColor = new(230, 195, 120, 255);
 
     private sealed record Row(string Name, int Value, bool Visible, int? VisibleValue);
     private sealed record Snapshot(uint Hash, string Area, Row[] Rows, string Error);
     private readonly Stopwatch _refresh = new();
     private Snapshot _snapshot;
     private string _search = "";
+
+    public override void DrawSettings()
+    {
+        base.DrawSettings();
+        if (!ImGui.TreeNode("Highlighted mods")) return;
+
+        foreach (var type in Enum.GetValues<ThreadType>())
+        {
+            if (!ImGui.TreeNode(type.ToString())) continue;
+
+            if (type == ThreadType.Bestiary)
+                ImGui.TextWrapped("The ‘Area is invaded by red beasts’ highlight is experimental and has yet to be confirmed in-game. Beast invasion chance (%) is a candidate stat for this outcome.");
+
+            foreach (var (name, modifier) in ThreadCatalog.Modifiers)
+            {
+                if (modifier.Type != type) continue;
+
+                var highlighted = Settings.HighlightedModifiers.GetValueOrDefault(name);
+                if (ImGui.Checkbox($"{modifier.Label}##{name}", ref highlighted))
+                {
+                    if (highlighted)
+                        Settings.HighlightedModifiers[name] = true;
+                    else
+                        Settings.HighlightedModifiers.Remove(name);
+                }
+            }
+            ImGui.TreePop();
+        }
+        ImGui.TreePop();
+    }
 
     public override void AreaChange(AreaInstance area)
     {
@@ -91,13 +123,13 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
         }
         catch { return; }
 
-        var lines = new List<(string Text, bool Heading)> { ($"Map modifiers - {snapshot.Area}", true) };
+        var lines = new List<(string Text, Color Colour)> { ($"Map modifiers - {snapshot.Area}", HeadingColor) };
         if (snapshot.Error != null)
-            lines.Add((snapshot.Error, false));
+            lines.Add((snapshot.Error, Color.White));
         else
         {
             var threadCount = snapshot.Rows.FirstOrDefault(row => row.Name == ThreadCatalog.ThreadCountStat);
-            if (threadCount != null) lines.Add((OverlayLabel(threadCount), false));
+            if (threadCount != null) lines.Add((OverlayLabel(threadCount), Color.White));
 
             foreach (var type in Enum.GetValues<ThreadType>())
             {
@@ -106,11 +138,16 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
                     && ThreadCatalog.Matches(type, row.Name)
                     && (always || Settings.IncludeVisibleStats.Value || !row.Visible)).ToArray();
                 if (!always && rows.Length == 0) continue;
-                lines.Add((type.ToString(), true));
-                if (rows.Length == 0) lines.Add(("No matching nonzero stats received", false));
-                foreach (var row in rows) lines.Add((OverlayLabel(row), false));
+                lines.Add((type.ToString(), HeadingColor));
+                if (rows.Length == 0) lines.Add(("No matching nonzero stats received", Color.White));
+                foreach (var row in rows)
+                {
+                    var colour = Settings.HighlightedModifiers.GetValueOrDefault(row.Name)
+                        ? Settings.HighlightColour.Value : Color.White;
+                    lines.Add((OverlayLabel(row), colour));
+                }
             }
-            if (lines.Count == 1) lines.Add(("No matching nonzero stats received", false));
+            if (lines.Count == 1) lines.Add(("No matching nonzero stats received", Color.White));
         }
         DrawOverlay(lines);
         if (Settings.ShowInspector) RenderInspector();
@@ -119,11 +156,11 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
     private string OverlayLabel(Row row) =>
         $"{(Settings.ShowRawNames.Value ? row.Name : ThreadCatalog.Label(row.Name))}: {row.Value}";
 
-    private void DrawOverlay(List<(string Text, bool Heading)> lines)
+    private void DrawOverlay(List<(string Text, Color Colour)> lines)
     {
         var width = Settings.BoxWidth.Value;
         const int padding = 10;
-        var wrapped = new List<(string Text, bool Heading)>();
+        var wrapped = new List<(string Text, Color Colour)>();
         foreach (var line in lines)
         {
             // Fit even long raw identifiers without drawing beyond the box.
@@ -137,7 +174,7 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
                     var space = remaining.LastIndexOf(' ', count - 1, count);
                     if (space > 0) count = space;
                 }
-                wrapped.Add((remaining[..count], line.Heading));
+                wrapped.Add((remaining[..count], line.Colour));
                 remaining = remaining[count..].TrimStart();
             }
         }
@@ -146,15 +183,15 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
         {
             var omitted = wrapped.Count - max + 1;
             wrapped = wrapped.Take(max - 1).ToList();
-            wrapped.Add(($"+ {omitted} more lines (open inspector)", false));
+            wrapped.Add(($"+ {omitted} more lines (open inspector)", Color.White));
         }
         var lineHeight = Graphics.MeasureText("Ag").Y + 3;
         var start = new Vector2(Settings.BoxPositionX.Value, Settings.BoxPositionY.Value);
         Graphics.DrawBox(start, start + new Vector2(width, padding * 2 + wrapped.Count * lineHeight),
-            new SharpDX.Color(0, 0, 0, Settings.BackgroundOpacity.Value));
+            new Color(0, 0, 0, Settings.BackgroundOpacity.Value));
         for (var i = 0; i < wrapped.Count; i++)
             Graphics.DrawText(wrapped[i].Text, start + new Vector2(padding, padding + i * lineHeight),
-                wrapped[i].Heading ? new SharpDX.Color(230, 195, 120, 255) : SharpDX.Color.White);
+                wrapped[i].Colour);
     }
 
     private void RenderInspector()
@@ -171,15 +208,11 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
             var includeVisible = Settings.IncludeVisibleStats.Value;
             if (ImGui.Checkbox("Include visible", ref includeVisible)) Settings.IncludeVisibleStats.Value = includeVisible;
             ImGui.SameLine();
-            var bestiary = Settings.BestiaryOnly.Value;
-            if (ImGui.Checkbox("Bestiary only", ref bestiary)) Settings.BestiaryOnly.Value = bestiary;
-            ImGui.SameLine();
             var raw = Settings.ShowRawNames.Value;
             if (ImGui.Checkbox("Raw names", ref raw)) Settings.ShowRawNames.Value = raw;
             ImGui.InputText("Search", ref _search, 256);
 
             var rows = snapshot.Rows.Where(row => (includeVisible || !row.Visible)
-                && (!bestiary || ThreadCatalog.Matches(ThreadType.Bestiary, row.Name))
                 && (row.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
                     || ThreadCatalog.Label(row.Name).Contains(_search, StringComparison.OrdinalIgnoreCase))).ToArray();
             if (ImGui.Button("Copy shown stats"))

@@ -14,7 +14,7 @@ Reload/restart ExileAPI so it builds this source plugin, then enable **ThreadMod
 - [ ] Blight
 - [ ] Breach
 - [ ] Expedition
-- [ ] Incursion
+- [X] Incursion
 - [ ] Legion
 - [ ] Ritual
 - [ ] Ultimatum
@@ -52,7 +52,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 ### Blight
 
-- [ ] Blight pump and towers spawn friendly Pustules that grant auras
+- [X] Blight pump and towers spawn friendly Pustules that grant auras
 - [ ] Defending the Blight pump spawns a miniboss whose rewards improve with Blight kills
 - [X] Blight lanes replaced by rolling currency monsters
 - [X] Blight lanes replaced by Rogue Exiles that each drop a Unique item
@@ -73,7 +73,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 ### Expedition
 
-- [ ] The Expedition encounter is massively larger (displayed as the raw percentage stat)
+- [X] The Expedition encounter is massively larger (displayed as the raw percentage stat)
 - [ ] All Runic Monsters in the encounter are at least Rare
 - [ ] A Runic Obelisk spawns and can revive all Rare and Magic Expedition monsters when activated
 - [ ] The encounter contains at least one chest that can be unearthed and drops a Logbook
@@ -83,8 +83,8 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 ### Incursion
 
 - [X] Doors can be golden. Opening one upgrades the tier of the connected room
-- [ ] Rooms contain an object that opens all locked doors
-- [ ] Rooms contain Vaal Vessels
+- [X] Rooms contain an object that opens all locked doors
+- [X] Rooms contain Vaal Vessels
 - [X] Rooms contain Gold Piles
 - [X] Claiming Cursed Treasures drops stacks of currency and reduces the remaining Incursion time
 - [X] Rooms contain a Vaal Flesh Merchant
@@ -92,7 +92,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 ### Legion
 
 - [X] The area contains additional Legion encounters
-- [ ] Both Legions have Generals
+- [X] Both Legions have Generals
 - [ ] War Hoards replace all Legion chests
 - [X] Purple crystals cover the battlefield. Defeating high-ranking Legion monsters shatters nearby crystals and drops items
 - [ ] Lower-ranking Legion monsters are promoted
@@ -124,9 +124,10 @@ The overlay shows the `MapTotalThreadCount` stat as **Thread count**, plus only 
 
 **Include Visible Stats** includes visible entries for all mapped categories.
 
-**Show Inspector** opens the original searchable diagnostic window in eligible areas. Its visibility and Bestiary filters are independent of the category Always Show overrides:
+Expand **Highlighted mods** and a category to choose which modifiers to colour when they appear in the overlay. All modifier checkboxes start unchecked. **Highlight colour** defaults to green and can be changed with the colour picker. The Bestiary section marks the red-beast invasion highlight as experimental and unconfirmed in-game.
 
-- **Bestiary only** narrows results to Beast/Bestiary/Einhar/Thread stat names.
+**Show Inspector** opens the searchable diagnostic window in eligible areas. Its visibility filter is independent of the category Always Show overrides.
+
 - **Include visible** also shows entries in the visible dictionary.
 - **Raw names** and hovering a label expose the exact API identifier.
 - **Search** matches labels and raw identifiers.
@@ -154,7 +155,7 @@ The in-game modifier tooltip lists these outcomes. All seven identifiers below a
 | Up to two lanes are Mycotic. | `MapBlightUpToXSuperchargedLanes` is a candidate. The installed data does not tie that identifier to the Mycotic tooltip. |
 | Building and upgrading Blight towers is free. | The installed data has a general `MapBlightTowerCostPct` stat. The specific Thread mapping and raw value are unconfirmed. |
 
-In **Threads**, enable the Blight **Always Show** toggle to include visible Blight stats in the overlay. To capture candidate values, open the inspector, clear **Bestiary only**, enable **Include visible**, and search for `Blight` after entering a Blight Thread map. **Copy shown stats** captures the raw identifiers and values for comparison with the lane types and tower costs you observe.
+In **Threads**, enable the Blight **Always Show** toggle to include visible Blight stats in the overlay. To capture candidate values, open the inspector, enable **Include visible**, and search for `Blight` after entering a Blight Thread map. **Copy shown stats** captures the raw identifiers and values for comparison with the lane types and tower costs you observe.
 
 ## Extending the modifier catalogue
 
@@ -168,4 +169,4 @@ From this directory: `dotnet build -c Release`. References resolve to the ExileA
 
 ## Live verification
 
-Enter a map activated with Bestiary Threads, select Bestiary only and Include visible, and copy the results. Compare the raw identifiers with observed encounters/effects. Repeat in a fresh map without those Threads while keeping other map sources as similar as possible. This helps identify candidates but does not by itself establish the cause of aggregate stats.
+Enter a map activated with Bestiary Threads, enable **Include visible** in the inspector, and copy the results. Compare the raw identifiers with observed encounters/effects. Repeat in a fresh map without those Threads while keeping other map sources as similar as possible. This helps identify candidates but does not by itself establish the cause of aggregate stats.
