@@ -19,6 +19,28 @@ Reload/restart ExileAPI so it builds this source plugin, then enable **ThreadMod
 - [ ] Ritual
 - [ ] Ultimatum
 
+## Guaranteed Thread bonuses
+
+The catalogue includes the guaranteed bonuses below. Values in the 3/6/8 columns are the expected bonuses supplied for this update, not values inferred by the plugin. The overlay displays the actual nonzero stats received from the client; other sources can contribute to those totals. Bestiary and Legion reuse existing catalogue entries. Ultimatum uses two separate stats.
+
+| Mechanic / bonus | 3 Threads | 6 Threads | 8 Threads | ExileAPI stat |
+| --- | --- | --- | --- | --- |
+| Abyss: additional Pits | 1 | 2 | 3 | `MapAbyssNumAdditionalPits` |
+| Breach: increased Magic monsters | 20% | 40% | 60% | `MapBreachNumberOfMagicPacksPct` |
+| Blight: Surpassing Chance for a lane to be at least Magic | +40% | +80% | +120% | `MapBlightLanesSpawnAtLeastMagicMonstersSurpassChancePct` |
+| Legion: additional encounters | 1 | 2 | 3 | `MapLegionLeagueExtraSpawns` |
+| Expedition: Surpassing Chance for an additional Remnant Suffix | 15% | 30% | 50% | `MapExpeditionExtraRelicSuffixChancePct` |
+| Ultimatum: increased Rare monsters | 15% | 15% | 30% | `MapUltimatumRareMonsterQuantityPct` |
+| Ultimatum: rewards as though additional rounds completed | 0 | 1 | 1 | `MapUltimatumRewardTiers` |
+| Ritual: increased Favours offered | 20% | 40% | 60% | `MapRitualRewardCountPct` |
+| Bestiary: additional Red Beasts | 2 | 3 | 4 | `MapAdditionalRedBeasts` |
+| Betrayal: increased chance for reinforcements | 30% | 60% | 90% | `MapBetrayalSecondaryTargetAmountPct` |
+| Incursion: increased Pack Size | 20% | 30% | 40% | `MapIncursionPackSizePct` |
+
+All identifiers above exist in the installed ExileAPI `GameStat` enum. Available local stat descriptions support the Abyss, Legion, Bestiary, Betrayal, Expedition, Ritual and Ultimatum mappings. Breach, Blight and Incursion are mapped by their enum names; their correspondence to the new bonuses still needs live verification. The local Expedition description calls this a chance rather than Surpassing Chance; the label follows the supplied update wording. None of these additions establishes live receipt or attribution to Threads.
+
+`MapNumExtraAbysses` counts additional Abyss encounters and remains a separate entry from additional Pits. Guaranteed modifiers also appear in the existing highlight settings. Enable **Include Visible Stats** or the category's **Always Show** toggle if a bonus is in the visible stats dictionary.
+
 ## Thread modifier checklist
 
 Check an item when its Thread outcome has been confirmed. Listed entries are stats the plugin can surface as candidates; a matching stat is not proof that the Thread caused it. **N/A** means no specific outcomes are listed yet, though the plugin can still surface stats whose names match that category's keywords.
@@ -64,11 +86,11 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 - [X] Breach Hives lead to a Hive Fortress 
 - [ ] Unstable Breaches contain a boss 
-- [ ] The area contains an additional Unstable Breach. This can roll up to three times 
+- [X] The area contains an additional Unstable Breach. This can roll up to three times 
 - [ ] Rare Breach monsters drop an additional Wombgift when killed (displayed as a raw percentage chance)
 - [X] The area contains an additional Genesis Tree Sapling 
-- [ ] Breach Hive and Fortress encounters contain additional Breach Coffers
-- [ ] Rare Breach monsters have an additional Breach modifier
+- [X] Breach Hive and Fortress encounters contain additional Breach Coffers
+- [X] Rare Breach monsters have an additional Breach modifier
 - [ ] Ailith's skills in the area are empowered
 
 ### Expedition
@@ -101,10 +123,10 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 ### Ritual
 
-- [ ] Rituals in the area are Nameless
+- [X] Rituals in the area are Nameless
 - [X] Ritual Altars spawn a friendly wisp. Standing near it increases Tribute gained from slain enemies
-- [ ] Completing the final Ritual turns it into a Bodach's Ritual that can be run again for more Tribute
-- [ ] Completing a Ritual grants every player a Blood Shrine buff 
+- [X] Completing the final Ritual turns it into a Bodach's Ritual that can be run again for more Tribute
+- [X] Completing a Ritual grants every player a Blood Shrine buff 
 - [X] At the final Ritual, players can sacrifice their Tribute to summon a champion of the King
 
 ### Ultimatum
