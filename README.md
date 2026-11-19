@@ -41,6 +41,21 @@ All identifiers above exist in the installed ExileAPI `GameStat` enum. Available
 
 `MapNumExtraAbysses` counts additional Abyss encounters and remains a separate entry from additional Pits. Guaranteed modifiers also appear in the **Mods** settings. Enable **Include Visible Stats** or the category's **Always Show** toggle if a bonus is in the visible stats dictionary.
 
+## Patch modifier changes
+
+The retired Ultimatum upside modifier (`MapUltimatumEnableSecondaryStats`) is no longer in the catalogue, overlay, or **Mods** dropdowns because the supplied patch notes make this baseline behavior. It can still appear as a raw stat in the inspector if the client sends it.
+
+| Added outcome | Catalogue support |
+| --- | --- |
+| Betrayal: non-reinforcement targets have two additional Rare bodyguards; can roll twice | Pending: no matching identifier found in the installed ExileAPI enum. |
+| Incursion: rooms contain a random type of Tempest | `MapIncursionContainsTempests`; enum-name mapping, pending live verification. |
+| Bestiary: Red Beasts have an additional Bestiary modifier; can roll twice | `MapBestiaryBeastsXAdditionalModifiers` is a candidate. Its name does not establish that it specifically affects Red Beasts or grants Bestiary modifiers; pending live verification. |
+| Ritual: 150% increased Favours; can roll twice | Reuses `MapRitualRewardCountPct`, alongside the guaranteed Thread bonus. Displays the received aggregate percentage, without inferring roll count or source. |
+| Breach: duplicate Rare monsters from the final Hive wave or upon stabilising a Breach | Pending: no matching identifier found in the installed ExileAPI enum. |
+| Incursion: Architects gain an additional Rare companion per Incursion completed in the area | Pending: no matching identifier found in the installed ExileAPI enum. `MapIncursionArchitectsXAdditionalModsPerIncursionRoomCompleted` refers to modifiers, not companion monsters, and is not used for this outcome. |
+
+Pending outcomes need an updated API identifier or a captured raw numeric stat and verified mapping before they can be added safely. Repeatable outcomes use their received raw totals; the plugin does not cap values or generate bonuses from the patch notes.
+
 ## Thread modifier checklist
 
 Check an item when its Thread outcome has been confirmed. Listed entries are stats the plugin can surface as candidates; a matching stat is not proof that the Thread caused it. **N/A** means no specific outcomes are listed yet, though the plugin can still surface stats whose names match that category's keywords.
@@ -56,6 +71,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 ### Bestiary
 
 - [X] Additional red beasts
+- [ ] Red Beasts have an additional Bestiary modifier (can roll twice; candidate `MapBestiaryBeastsXAdditionalModifiers`)
 - [ ] Beast invasion chance (Thread outcome mapping unconfirmed)
 - [ ] Area contains the Black Morrigan
 - [X] Einhar blood explosion aura
@@ -65,6 +81,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 ### Betrayal
 
+- [ ] Non-reinforcement targets have two additional Rare bodyguards (can roll twice; API mapping pending)
 - [ ] Catarina accompanies a Syndicate encounter
 - [X] Dealing with downed Syndicate members grants powerful buffs to players and mercenaries
 - [ ] Catarina's Corpse Sculpture appears in the area
@@ -84,6 +101,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 ### Breach
 
+- [ ] Duplicate Rare monsters spawned in the final Hive wave or upon stabilising a Breach (API mapping pending)
 - [X] Breach Hives lead to a Hive Fortress 
 - [ ] Unstable Breaches contain a boss 
 - [X] The area contains an additional Unstable Breach. This can roll up to three times 
@@ -104,6 +122,8 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 ### Incursion
 
+- [ ] Rooms contain a random type of Tempest (`MapIncursionContainsTempests`; pending live verification)
+- [ ] Architects have an additional Rare companion for each Incursion completed in the area (API mapping pending)
 - [X] Doors can be golden. Opening one upgrades the tier of the connected room
 - [X] Rooms contain an object that opens all locked doors
 - [X] Rooms contain Vaal Vessels
@@ -123,6 +143,7 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 ### Ritual
 
+- [ ] Ritual Altars offer 150% increased Favours (can roll twice; reuses `MapRitualRewardCountPct`)
 - [X] Rituals in the area are Nameless
 - [X] Ritual Altars spawn a friendly wisp. Standing near it increases Tribute gained from slain enemies
 - [X] Completing the final Ritual turns it into a Bodach's Ritual that can be run again for more Tribute
@@ -138,7 +159,6 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 - [ ] Double Down is available at round 7 or 8
 - [X] Cursed Currency spawns every round. Claiming it adds random Currency to the collected rewards
 - [ ] The encounter spawns a nearby Soul Core. Claiming it speeds up completion for all Ultimatum encounter types and can empower Ultimatum enemies
-- [ ] Each round offers secondary upsides alongside the usual difficulty modifiers
 
 Set **Box Position X/Y**, **Box Width**, **Background Opacity**, and **Maximum Lines** in the plugin settings. Text wraps to the box width and uses ExileAPI's configured font. Overflow is indicated; use the inspector to see everything.
 
@@ -147,6 +167,8 @@ The overlay shows the `MapTotalThreadCount` stat as **Thread count**, plus only 
 **Include Visible Stats** includes visible entries for all mapped categories.
 
 Expand **Mods** and a category to choose **Highlight**, **Normal**, or **Hide** from each modifier's dropdown. **Highlight** uses the configured **Highlight colour** (green by default), **Normal** uses white, and **Hide** omits the modifier from the overlay even with **Always Show** enabled. The inspector and copied stats still include hidden modifiers for diagnostics. New modifiers default to **Normal**, and existing highlight choices are preserved. The Bestiary section marks the red-beast invasion highlight as experimental and unconfirmed in-game.
+
+Bestiary has a special overlay override: `MapBestiaryBeastsXAdditionalModifiers` is hidden when its received value is exactly `1`, its reported baseline without Threads. This takes precedence over **Highlight**, **Normal**, **Include Visible Stats**, and **Always Show**. Other values follow the usual display settings and remain unadjusted; the inspector and copied stats preserve the raw value, including `1`.
 
 **Show Inspector** opens the searchable diagnostic window in eligible areas. Its visibility filter is independent of the category Always Show overrides.
 

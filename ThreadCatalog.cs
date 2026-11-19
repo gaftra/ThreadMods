@@ -18,6 +18,7 @@ internal static class ThreadCatalog
     internal static readonly IReadOnlyDictionary<string, Modifier> Modifiers = new Dictionary<string, Modifier>
     {
         ["MapAdditionalRedBeasts"] = new(ThreadType.Bestiary, "Additional red beasts"),
+        ["MapBestiaryBeastsXAdditionalModifiers"] = new(ThreadType.Bestiary, "Additional Bestiary modifiers on Red Beasts (candidate)"),
         ["MapEinharMissionBeastInvasionChancePct"] = new(ThreadType.Bestiary, "Beast invasion chance (%)"),
         ["DisplayMemoryLineBestiaryGreatMigration"] = new(ThreadType.Bestiary, "Bestiary Great Migration (memory display stat)"),
         ["MapBestiaryAreaContainsBlackMorrigan"] = new(ThreadType.Bestiary, "Area contains the Black Morrigan"),
@@ -63,6 +64,7 @@ internal static class ThreadCatalog
         ["MapExpeditionLieutenantMarkerCount"] = new(ThreadType.Expedition, "Runic Lieutenant markers (extra reroll currencies)"),
         ["MapExpeditionXAdditionalSpecialRemnantModifiers"] = new(ThreadType.Expedition, "Additional upside affixes on Expedition Remnants"),
         ["MapIncursionPackSizePct"] = new(ThreadType.Incursion, "Increased Incursion pack size (%)"),
+        ["MapIncursionContainsTempests"] = new(ThreadType.Incursion, "Rooms contain a random type of Tempest"),
         ["MapIncursionCanHaveGoldenDoors"] = new(ThreadType.Incursion, "Opening golden doors upgrades the connected room"),
         ["MapIncursionContainsDoorUnlockingObject"] = new(ThreadType.Incursion, "Rooms contain an object that opens all locked doors"),
         ["MapIncursionContainsXVaalVessels"] = new(ThreadType.Incursion, "Vaal Vessels in Incursion rooms"),
@@ -91,8 +93,7 @@ internal static class ThreadCatalog
         ["MapUltimatumSpawnAdrenalineHearts"] = new(ThreadType.Ultimatum, "Adrenaline-granting heart spawns each round"),
         ["MapUltimatumCanDoubleDownFromRoundX"] = new(ThreadType.Ultimatum, "Double Down available from round"),
         ["MapUltimatumSpawnXCursedCurrencyPerRound"] = new(ThreadType.Ultimatum, "Claimable Cursed Currency each round"),
-        ["MapUltimatumSpawnSoulCoreObject"] = new(ThreadType.Ultimatum, "Claimable Soul Core speeds up the encounter and can empower enemies"),
-        ["MapUltimatumEnableSecondaryStats"] = new(ThreadType.Ultimatum, "Each round offers secondary upsides")
+        ["MapUltimatumSpawnSoulCoreObject"] = new(ThreadType.Ultimatum, "Claimable Soul Core speeds up the encounter and can empower enemies")
     };
 
     internal static bool HasExplicitModifier(string name) => Modifiers.ContainsKey(name);

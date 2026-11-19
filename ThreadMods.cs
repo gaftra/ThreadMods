@@ -142,6 +142,8 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
                 var rows = snapshot.Rows.Where(row => ThreadCatalog.HasExplicitModifier(row.Name)
                     && ThreadCatalog.Matches(type, row.Name)
                     && Settings.DisplayMode(row.Name) != ModDisplayMode.Hide
+                    // This stat has a baseline of one even without a Bestiary Thread.
+                    && !(row.Name == "MapBestiaryBeastsXAdditionalModifiers" && row.Value == 1)
                     && (always || Settings.IncludeVisibleStats.Value || !row.Visible)).ToArray();
                 if (!always && rows.Length == 0) continue;
                 lines.Add((type.ToString(), HeadingColor));
