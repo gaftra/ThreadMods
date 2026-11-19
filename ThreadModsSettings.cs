@@ -6,6 +6,8 @@ using SharpDX;
 
 namespace ThreadMods;
 
+public enum ModDisplayMode { Normal, Highlight, Hide }
+
 public sealed class ThreadModsSettings : ISettings
 {
     public ToggleNode Enable { get; set; } = new(true);
@@ -23,6 +25,17 @@ public sealed class ThreadModsSettings : ISettings
 
     [IgnoreMenu]
     public Dictionary<string, bool> HighlightedModifiers { get; set; } = new();
+
+    [IgnoreMenu]
+    public Dictionary<string, ModDisplayMode> Mods { get; set; } = new();
+
+    internal ModDisplayMode DisplayMode(string name)
+    {
+        // An explicit Normal selection must override a legacy highlight too.
+        if (Mods.TryGetValue(name, out var mode))
+            return mode is ModDisplayMode.Highlight or ModDisplayMode.Hide ? mode : ModDisplayMode.Normal;
+        return HighlightedModifiers.GetValueOrDefault(name) ? ModDisplayMode.Highlight : ModDisplayMode.Normal;
+    }
 }
 
 [Submenu]

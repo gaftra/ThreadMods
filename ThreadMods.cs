@@ -15,6 +15,8 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
 {
     private const int MinimumAreaLevel = 68;
     private static readonly Color HeadingColor = new(230, 195, 120, 255);
+    private static readonly ModDisplayMode[] DisplayModes =
+        [ModDisplayMode.Highlight, ModDisplayMode.Normal, ModDisplayMode.Hide];
 
     private sealed record Row(string Name, int Value, bool Visible, int? VisibleValue);
     private sealed record Snapshot(uint Hash, string Area, Row[] Rows, string Error);
@@ -25,7 +27,7 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
     public override void DrawSettings()
     {
         base.DrawSettings();
-        if (!ImGui.TreeNode("Highlighted mods")) return;
+        if (!ImGui.TreeNode("Mods")) return;
 
         foreach (var type in Enum.GetValues<ThreadType>())
         {
@@ -38,13 +40,16 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
             {
                 if (modifier.Type != type) continue;
 
-                var highlighted = Settings.HighlightedModifiers.GetValueOrDefault(name);
-                if (ImGui.Checkbox($"{modifier.Label}##{name}", ref highlighted))
+                var mode = Settings.DisplayMode(name);
+                ImGui.SetNextItemWidth(100);
+                if (ImGui.BeginCombo($"{modifier.Label}##{name}", mode.ToString()))
                 {
-                    if (highlighted)
-                        Settings.HighlightedModifiers[name] = true;
-                    else
-                        Settings.HighlightedModifiers.Remove(name);
+                    foreach (var option in DisplayModes)
+                    {
+                        if (ImGui.Selectable(option.ToString(), option == mode))
+                            Settings.Mods[name] = option;
+                    }
+                    ImGui.EndCombo();
                 }
             }
             ImGui.TreePop();
@@ -136,18 +141,19 @@ public sealed class ThreadMods : BaseSettingsPlugin<ThreadModsSettings>
                 var always = Settings.Threads.AlwaysShow(type);
                 var rows = snapshot.Rows.Where(row => ThreadCatalog.HasExplicitModifier(row.Name)
                     && ThreadCatalog.Matches(type, row.Name)
+                    && Settings.DisplayMode(row.Name) != ModDisplayMode.Hide
                     && (always || Settings.IncludeVisibleStats.Value || !row.Visible)).ToArray();
                 if (!always && rows.Length == 0) continue;
                 lines.Add((type.ToString(), HeadingColor));
-                if (rows.Length == 0) lines.Add(("No matching nonzero stats received", Color.White));
+                if (rows.Length == 0) lines.Add(("No matching modifiers to display", Color.White));
                 foreach (var row in rows)
                 {
-                    var colour = Settings.HighlightedModifiers.GetValueOrDefault(row.Name)
+                    var colour = Settings.DisplayMode(row.Name) == ModDisplayMode.Highlight
                         ? Settings.HighlightColour.Value : Color.White;
                     lines.Add((OverlayLabel(row), colour));
                 }
             }
-            if (lines.Count == 1) lines.Add(("No matching nonzero stats received", Color.White));
+            if (lines.Count == 1) lines.Add(("No matching modifiers to display", Color.White));
         }
         DrawOverlay(lines);
         if (Settings.ShowInspector) RenderInspector();

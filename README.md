@@ -39,7 +39,7 @@ The catalogue includes the guaranteed bonuses below. Values in the 3/6/8 columns
 
 All identifiers above exist in the installed ExileAPI `GameStat` enum. Available local stat descriptions support the Abyss, Legion, Bestiary, Betrayal, Expedition, Ritual and Ultimatum mappings. Breach, Blight and Incursion are mapped by their enum names; their correspondence to the new bonuses still needs live verification. The local Expedition description calls this a chance rather than Surpassing Chance; the label follows the supplied update wording. None of these additions establishes live receipt or attribution to Threads.
 
-`MapNumExtraAbysses` counts additional Abyss encounters and remains a separate entry from additional Pits. Guaranteed modifiers also appear in the existing highlight settings. Enable **Include Visible Stats** or the category's **Always Show** toggle if a bonus is in the visible stats dictionary.
+`MapNumExtraAbysses` counts additional Abyss encounters and remains a separate entry from additional Pits. Guaranteed modifiers also appear in the **Mods** settings. Enable **Include Visible Stats** or the category's **Always Show** toggle if a bonus is in the visible stats dictionary.
 
 ## Thread modifier checklist
 
@@ -142,11 +142,11 @@ Check an item when its Thread outcome has been confirmed. Listed entries are sta
 
 Set **Box Position X/Y**, **Box Width**, **Background Opacity**, and **Maximum Lines** in the plugin settings. Text wraps to the box width and uses ExileAPI's configured font. Overflow is indicated; use the inspector to see everything.
 
-The overlay shows the `MapTotalThreadCount` stat as **Thread count**, plus only exact modifier entries listed in `ThreadCatalog.cs`. Keyword matches and other unclassified stats remain available in the inspector. The **Threads** settings contain **Always Show** toggles for Bestiary, Abyss, Betrayal, Blight, Breach, Expedition, Incursion, Legion, Ritual, and Ultimatum. All are off by default. An enabled toggle keeps that category heading present and includes its visible as well as hidden nonzero mapped stats. With no data it says "No matching nonzero stats received"; it never invents an active effect. Categories appear automatically when matching hidden mapped stats arrive. These settings apply inside areas, not towns or hideouts.
+The overlay shows the `MapTotalThreadCount` stat as **Thread count**, plus only exact modifier entries listed in `ThreadCatalog.cs`. Keyword matches and other unclassified stats remain available in the inspector. The **Threads** settings contain **Always Show** toggles for Bestiary, Abyss, Betrayal, Blight, Breach, Expedition, Incursion, Legion, Ritual, and Ultimatum. All are off by default. An enabled toggle keeps that category heading present and includes its visible as well as hidden nonzero mapped stats, except modifiers set to **Hide**. With no displayable modifiers it says "No matching modifiers to display"; it never invents an active effect. Categories appear automatically when matching hidden mapped stats arrive and have not been set to **Hide**. These settings apply inside areas, not towns or hideouts.
 
 **Include Visible Stats** includes visible entries for all mapped categories.
 
-Expand **Highlighted mods** and a category to choose which modifiers to colour when they appear in the overlay. All modifier checkboxes start unchecked. **Highlight colour** defaults to green and can be changed with the colour picker. The Bestiary section marks the red-beast invasion highlight as experimental and unconfirmed in-game.
+Expand **Mods** and a category to choose **Highlight**, **Normal**, or **Hide** from each modifier's dropdown. **Highlight** uses the configured **Highlight colour** (green by default), **Normal** uses white, and **Hide** omits the modifier from the overlay even with **Always Show** enabled. The inspector and copied stats still include hidden modifiers for diagnostics. New modifiers default to **Normal**, and existing highlight choices are preserved. The Bestiary section marks the red-beast invasion highlight as experimental and unconfirmed in-game.
 
 **Show Inspector** opens the searchable diagnostic window in eligible areas. Its visibility filter is independent of the category Always Show overrides.
 
